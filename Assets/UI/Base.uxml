@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: column; flex-wrap: nowrap; align-items: center; justify-content: flex-start; align-self: auto;">
+        <ui:Label text="Game Name" display-tooltip-when-elided="true" name="Title" style="height: 155px; width: 425px; -unity-text-align: middle-center; -unity-font-style: bold; font-size: 50%;" />
+        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
+        <ui:TextField picking-mode="Ignore" label="Player 1" value="1st Player Name" name="1st-player-input-field" />
+        <ui:TextField picking-mode="Ignore" label="Player 2" value="2nd Player Name" name="2nd-player-input-field" />
+        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
+        <ui:Button text="Start Game" display-tooltip-when-elided="true" name="start-game-button" />
+    </ui:VisualElement>
+</ui:UXML>
