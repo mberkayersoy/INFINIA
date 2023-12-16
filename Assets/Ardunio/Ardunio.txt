@@ -1,0 +1,61 @@
+ // Button pins
+const int buttonPin1 = 2;
+const int buttonPin2 = 3;
+const int buttonPin3 = 4;
+const int buttonPin4 = 5;
+// Button States press or not
+int buttonState1 = 0;
+int buttonState2 = 0;
+int buttonState3 = 0;
+int buttonState4 = 0;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(buttonPin1, INPUT_PULLUP);
+  pinMode(buttonPin2, INPUT_PULLUP);
+  pinMode(buttonPin3, INPUT_PULLUP);
+  pinMode(buttonPin4, INPUT_PULLUP);
+}
+
+void loop() {
+  buttonState1 = digitalRead(buttonPin1);
+  if (buttonState1 == LOW) 
+  {
+    Serial.println("1 1");
+  }
+  else 
+  {
+    Serial.println("1 0");
+  }
+
+  buttonState2 = digitalRead(buttonPin2);
+  if (buttonState2 == LOW) 
+  {
+    Serial.println("2 -1");
+  }
+  else 
+  {
+    Serial.println("2 0");
+  }
+  
+  buttonState3 = digitalRead(buttonPin3);
+  if (buttonState3 == LOW) 
+  {
+    Serial.println("3 -1");
+  }
+  else 
+  {
+    Serial.println("3 0");
+  }
+    
+  buttonState4 = digitalRead(buttonPin4);
+  if (buttonState4 == LOW) 
+  {
+    Serial.println("4 1");
+  }
+  else 
+  {
+    Serial.println("4 0");
+  }
+  
+}
