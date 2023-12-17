@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 public class AnimationManager : MonoBehaviour
 {
     private Animator animator;
-    private Player1Movement player1Movement;
+    private IPlayer player;
 
     // Animation parameteres 
     private int animIDHorizontal;
@@ -15,16 +16,16 @@ public class AnimationManager : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        player1Movement = GetComponent<Player1Movement>();
+        player = GetComponent<IPlayer>();
     }
 
     private void Start()
     {
         AssignAnimationIDs();
-        player1Movement.OnFreeFallAction += PlayerMovement_OnFreeFallAction;
-        player1Movement.OnGroundStateChangeAction += PlayerMovement_OnGroundStateChangeAction;
-        player1Movement.OnJumpAction += PlayerMovement_OnJumpAction;
-        player1Movement.OnSpeedChangeAction += PlayerMovement_OnSpeedChangeAction;
+        player.OnFreeFallAction += PlayerMovement_OnFreeFallAction;
+        player.OnGroundStateChangeAction += PlayerMovement_OnGroundStateChangeAction;
+        player.OnJumpAction += PlayerMovement_OnJumpAction;
+        player.OnSpeedChangeAction += PlayerMovement_OnSpeedChangeAction;
     }
 
     private void PlayerMovement_OnFreeFallAction(bool isFreeFall)
@@ -54,4 +55,12 @@ public class AnimationManager : MonoBehaviour
         animIDGrounded = Animator.StringToHash("Grounded");
         animIDFreeFall = Animator.StringToHash("FreeFall");
     }
+}
+
+public interface IPlayer
+{
+    public event Action<float> OnSpeedChangeAction;
+    public event Action<bool> OnGroundStateChangeAction;
+    public event Action<bool> OnJumpAction;
+    public event Action<bool> OnFreeFallAction;
 }

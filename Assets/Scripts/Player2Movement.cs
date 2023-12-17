@@ -1,11 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GameSystemsCookbook;
-using System;
 
-[RequireComponent(typeof(PlayerInputHandler))]
-public class Player1Movement : MonoBehaviour, IPlayer
+public class Player2Movement : MonoBehaviour, IPlayer
 {
     [SerializeField] private bool isGrounded;
     [SerializeField] private float jumpForce;
@@ -18,14 +16,14 @@ public class Player1Movement : MonoBehaviour, IPlayer
     public event Action<bool> OnJumpAction;
     public event Action<bool> OnFreeFallAction;
 
-    private PlayerInputHandler _input;
     private GroundCheck _groundCheck;
     private Rigidbody _rb;
-    private void Start()
+    void Start()
     {
         _jumpTimeoutDelta = jumpTimeout;
         _groundCheck.OnIsGroundedChangeAction += GroundCheck_OnIsGroundedChangeAction;
     }
+
     private void GroundCheck_OnIsGroundedChangeAction(bool isGrounded)
     {
         this.isGrounded = isGrounded;
@@ -35,7 +33,6 @@ public class Player1Movement : MonoBehaviour, IPlayer
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _input = GetComponent<PlayerInputHandler>();
         _groundCheck = GetComponent<GroundCheck>();
     }
 
@@ -43,16 +40,19 @@ public class Player1Movement : MonoBehaviour, IPlayer
     {
         Jump();
         Move();
+        //if ()
     }
 
     private void Move()
     {
+        //move = Vector2.zero;
         // normalise input direction
-        Vector2 horizontalInput = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+        Vector2 horizontalInput = new Vector3(move.x, 0.0f, move.y).normalized;
         Vector3 moveVector;
-        if (horizontalInput.x > 0) {
+        if (horizontalInput.x > 0)
+        {
             transform.rotation = Quaternion.LookRotation(Vector3.forward);
-             moveVector = transform.forward * speed;
+            moveVector = transform.forward * speed;
         }
         else if (horizontalInput.x < 0)
         {
@@ -62,12 +62,12 @@ public class Player1Movement : MonoBehaviour, IPlayer
         }
         else
         {
-            moveVector = Vector3.zero;
+            //moveVector = Vector3.zero;
         }
 
-        _rb.velocity = new Vector3(moveVector.x, _rb.velocity.y, moveVector.z);
-
-        OnSpeedChangeAction?.Invoke(Mathf.Abs(_input.move.x));
+        _rb.velocity = new Vector3(0f, _rb.velocity.y, move.x);
+        Debug.Log(move.x);
+        OnSpeedChangeAction?.Invoke(Mathf.Abs(move.x));
     }
 
     private void Jump()
@@ -77,13 +77,13 @@ public class Player1Movement : MonoBehaviour, IPlayer
             OnJumpAction?.Invoke(false);
             OnFreeFallAction?.Invoke(false);
 
-            if (_input.jump && _jumpTimeoutDelta <= 0.0f)
+            if (jump && _jumpTimeoutDelta <= 0.0f)
             {
                 Debug.Log("jump");
                 _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                 OnJumpAction?.Invoke(true);
 
-                _input.jump = false;
+                jump = false;
             }
 
             // jump timeout
@@ -102,7 +102,45 @@ public class Player1Movement : MonoBehaviour, IPlayer
                 OnFreeFallAction?.Invoke(true);
             }
 
-            _input.jump = false;
+            jump = false;
         }
+    }
+
+    public Vector2 move;
+    public bool jump;
+    // Invoked when a line of data is received from the serial device.
+    void OnMessageArrived(string msg)
+    {
+        switch (msg[0])
+        {
+            case '1':
+                move.y = 1;
+                jump = true;
+                break;
+            case '2':
+                move.x = -1;
+                break;
+            case '3':
+                // Debug.Log("3 pressed: " + msg[1]);
+                break;
+            case '4':
+                move.x = 1;
+                break;
+            default:
+                break;
+        }
+        //Debug.Log("message: " + msg);
+
+    }
+
+    // Invoked when a connect/disconnect event occurs. The parameter 'success'
+    // will be 'true' upon connection, and 'false' upon disconnection or
+    // failure to connect.
+    void OnConnectionEvent(bool success)
+    {
+        if (success)
+            Debug.Log("Connection established");
+        else
+            Debug.Log("Connection attempt failed or disconnection detected");
     }
 }

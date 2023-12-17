@@ -10,6 +10,7 @@ public class PlayerInputHandler : MonoBehaviour
     public bool jump;
 
     PlayerInputActions playerInputActions;
+    private float previousX;
 
     private void Awake()
     {
@@ -18,7 +19,7 @@ public class PlayerInputHandler : MonoBehaviour
         playerInputActions.Player.Enable();
 
         playerInputActions.Player.Move.performed += Move_performed;
-        playerInputActions.Player.Move.canceled += Move_performed;
+        //playerInputActions.Player.Move.canceled += Move_performed;
         //playerInputActions.Player.AdditionalInput.performed += AdditionalInput_performed;
 
     }
@@ -28,26 +29,21 @@ public class PlayerInputHandler : MonoBehaviour
         Debug.Log("Additional Input");
     }
 
-    private void Start()
-    {
-        //Cursor.lockState = CursorLockMode.Locked;
-    }
-
     private void Move_performed(InputAction.CallbackContext callback)
     {
         move = callback.ReadValue<Vector2>();
         if (move.y == 1)
         {
+            previousX = move.x;
             jump = true;
         }
-
         //Debug.Log(callback.ReadValue<Vector2>());
     }
 
     private void OnDestroy()
     {
         playerInputActions.Player.Move.performed -= Move_performed;
-        playerInputActions.Player.Move.canceled -= Move_performed;
+        //playerInputActions.Player.Move.canceled -= Move_performed;
         //playerInputActions.Player.AdditionalInput.performed += AdditionalInput_performed;
     }
 }
