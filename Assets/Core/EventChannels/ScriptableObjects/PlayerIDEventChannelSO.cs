@@ -10,5 +10,6 @@ namespace GameSystemsCookbook
     [CreateAssetMenu(menuName = "Events/PlayerID EventChannel", fileName = "PlayerIDEventChannel")]
     public class PlayerIDEventChannelSO : GenericEventChannelSO<PlayerIDSO>
     {
+
     }
 }

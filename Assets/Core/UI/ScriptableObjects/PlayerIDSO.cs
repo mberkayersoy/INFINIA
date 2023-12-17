@@ -8,7 +8,8 @@ namespace GameSystemsCookbook
     [CreateAssetMenu(fileName = "PlayerID")]
     public class PlayerIDSO : ScriptableObject
     {
-
+        public string playerName;
+        public bool isReady = false;
 
     }
 }

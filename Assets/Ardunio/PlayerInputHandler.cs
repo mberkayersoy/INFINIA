@@ -1,48 +1,53 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
-//using UnityEngine.InputSystem;
+using UnityEngine.InputSystem;
 
 public class PlayerInputHandler : MonoBehaviour
 {
-    //[Header("Input Values")]
-    //public Vector2 move;
-    //public bool jump;
+    [Header("Input Values")]
+    public Vector2 move;
+    public bool jump;
 
-    //PlayerInputActions playerInputActions;
+    PlayerInputActions playerInputActions;
 
-    //private void Awake()
-    //{
-    //    playerInputActions = new PlayerInputActions();
+    private void Awake()
+    {
+        playerInputActions = new PlayerInputActions();
 
-    //    playerInputActions.Player.Enable();
+        playerInputActions.Player.Enable();
 
-    //    playerInputActions.Player.Move.performed += Move_performed;
-    //    playerInputActions.Player.Move.canceled += Move_performed;
-    //    playerInputActions.Player.AdditionalInput.performed += AdditionalInput_performed;
+        playerInputActions.Player.Move.performed += Move_performed;
+        playerInputActions.Player.Move.canceled += Move_performed;
+        //playerInputActions.Player.AdditionalInput.performed += AdditionalInput_performed;
 
-    //}
+    }
 
-    //private void AdditionalInput_performed(InputAction.CallbackContext obj)
-    //{
-    //    Debug.Log("Additional Input");
-    //}
+    private void AdditionalInput_performed(InputAction.CallbackContext obj)
+    {
+        Debug.Log("Additional Input");
+    }
 
-    //private void Start()
-    //{
-    //    Cursor.lockState = CursorLockMode.Locked;
-    //}
+    private void Start()
+    {
+        //Cursor.lockState = CursorLockMode.Locked;
+    }
 
-    //private void Move_performed(InputAction.CallbackContext callback)
-    //{
-    //    move = callback.ReadValue<Vector2>();
-    //    //Debug.Log(callback.ReadValue<Vector2>());
-    //}
+    private void Move_performed(InputAction.CallbackContext callback)
+    {
+        move = callback.ReadValue<Vector2>();
+        if (move.y == 1)
+        {
+            jump = true;
+        }
 
-    //private void OnDestroy()
-    //{
-    //    playerInputActions.Player.Move.performed -= Move_performed;
-    //    playerInputActions.Player.Move.canceled -= Move_performed;
-    //    playerInputActions.Player.AdditionalInput.performed += AdditionalInput_performed;
-    //}
+        //Debug.Log(callback.ReadValue<Vector2>());
+    }
+
+    private void OnDestroy()
+    {
+        playerInputActions.Player.Move.performed -= Move_performed;
+        playerInputActions.Player.Move.canceled -= Move_performed;
+        //playerInputActions.Player.AdditionalInput.performed += AdditionalInput_performed;
+    }
 }
