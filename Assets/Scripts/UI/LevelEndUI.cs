@@ -15,7 +15,7 @@ public class LevelEndUI : MonoBehaviour
 
     private void Awake()
     {
-        _winnerText = GetComponent<TextMeshProUGUI>();
+        //_winnerText = GetComponent<TextMeshProUGUI>();
     }
     private void OnEnable()
     {

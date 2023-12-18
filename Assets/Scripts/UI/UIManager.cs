@@ -2,6 +2,8 @@ using UnityEngine;
 using GameSystemsCookbook;
 using System.Collections.Generic;
 using System.Collections;
+using System;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -21,6 +23,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private VoidEventChannelSO _optionsButton;
     [SerializeField] private VoidEventChannelSO _selectLevelButton;
     [SerializeField] private VoidEventChannelSO _exitApplication;
+    [SerializeField] private PlayerIDEventChannelSO _playerWonDisplay;
     [SerializeField] private List<PlayerIDSO> playerList;
 
     [Header("Panels")]
@@ -30,6 +33,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _selectLevelPanel;
     [SerializeField] private GameObject _optionsPanel;
     [SerializeField] private GameObject _preloadPanel;
+    [SerializeField] private GameObject _levelEndUI;
 
     [Header("Settings")]
     [SerializeField] private float _preloadDelay = 2f;
@@ -42,6 +46,7 @@ public class UIManager : MonoBehaviour
         _playersReady.OnEventRaised += CheckPlayersReady;
         _optionsButton.OnEventRaised += ShowOptionsPanel;
         _exitApplication.OnEventRaised += ExitApplication;
+        _playerWonDisplay.OnEventRaised += ShowWinner;
     }
 
     private void OnDisable()
@@ -51,6 +56,8 @@ public class UIManager : MonoBehaviour
         _returnMenu.OnEventRaised -= ReturnMenuPanel;
         _playersReady.OnEventRaised -= CheckPlayersReady;
         _exitApplication.OnEventRaised -= ExitApplication;
+        _playerWonDisplay.OnEventRaised -= ShowWinner;
+        StopAllCoroutines();
     }
     private void ShowOptionsPanel()
     {
@@ -73,6 +80,7 @@ public class UIManager : MonoBehaviour
     {
         PauseGameState(false);
         SetActivePanel(_menuPanel.name);
+        SceneManager.LoadScene(0);
     }
 
     private void PauseGameState(bool isPaused)
@@ -93,6 +101,7 @@ public class UIManager : MonoBehaviour
         _selectLevelPanel.SetActive(activatePanel.Equals(_selectLevelPanel.name));
         _optionsPanel.SetActive(activatePanel.Equals(_optionsPanel.name));
         _preloadPanel.SetActive(activatePanel.Equals(_preloadPanel.name));
+        _levelEndUI.SetActive(activatePanel.Equals(_levelEndUI.name));
     }
 
     private void DelaySplashScreen(float delay)
@@ -130,7 +139,10 @@ public class UIManager : MonoBehaviour
         _preloadComplete.RaiseEvent();
         SetActivePanel(_gamePanel.name);
     }
-
+    private void ShowWinner(PlayerIDSO arg0)
+    {
+        SetActivePanel(_levelEndUI.name);
+    }
     private void ExitApplication()
     {
 #if UNITY_EDITOR

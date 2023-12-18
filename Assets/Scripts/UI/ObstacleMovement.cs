@@ -5,22 +5,30 @@ using DG.Tweening;
 
 public class ObstacleMovement : MonoBehaviour
 {
-    [SerializeField] private float _rotationSpeed = 3f;
+    [SerializeField] private float duration = 3f;
+    [SerializeField] private float _endValue = 3f;
 
-    private void OnEnable()
+    [SerializeField] private float distance = 2f;
+
+    void Start()
     {
-        RotateObject();
+        MoveUpDownLoop();
+    }
+
+    void MoveUpDownLoop()
+    {
+        transform.DOLocalMoveY(transform.localPosition.y + distance, duration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                transform.DOLocalMoveY(transform.localPosition.y - distance, duration)
+                    .SetEase(Ease.Linear)
+                    .OnComplete(() => MoveUpDownLoop());
+            });
     }
 
     private void OnDisable()
     {
         DOTween.Kill(this);
-    }
-
-    void RotateObject()
-    {
-        transform.DORotate(new Vector3(360f, 0f, 0f), _rotationSpeed, RotateMode.FastBeyond360)
-            .SetLoops(-1)
-            .SetEase(Ease.Linear);
     }
 }

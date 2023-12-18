@@ -54,18 +54,15 @@ public class Player2Movement : MonoBehaviour, IPlayer
             transform.rotation = Quaternion.LookRotation(Vector3.forward);
             moveVector = transform.forward * speed;
         }
-        else if (horizontalInput.x < 0)
+        else
         {
             transform.rotation = Quaternion.LookRotation(-Vector3.forward);
             moveVector = transform.forward * speed;
 
         }
-        else
-        {
-            //moveVector = Vector3.zero;
-        }
 
-        _rb.velocity = new Vector3(0f, _rb.velocity.y, move.x);
+
+        _rb.velocity = new Vector3(0f, _rb.velocity.y, move.x * speed);
         Debug.Log(move.x);
         OnSpeedChangeAction?.Invoke(Mathf.Abs(move.x));
     }
